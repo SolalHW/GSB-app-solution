@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: gsb_mysql_db
+    restart: unless-stopped
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secure_password
+      MYSQL_DATABASE: GSB_FRAIS
+      MYSQL_USER: gsb_user
+      MYSQL_PASSWORD: gsb_secure_password
+      TZ: 'Europe/Paris'
+    
+    ports:
+      - "3306:3306"
+    
+    volumes:
+      # Volume persistant pour les données
+      - gsb_mysql_data:/var/lib/mysql
+      # Script SQL d'initialisation (exécuté au démarrage)
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+    networks:
+      - gsb_network
+    
+    # Configuration avancée MySQL
+    command: 
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secure_password"]
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  gsb_mysql_data:
+    driver: local
+
+networks:
+  gsb_network:
+    driver: bridge
