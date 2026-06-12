@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.3.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GSB_Frais.Models\GSB_Frais.Models.csproj" />
+  </ItemGroup>
+
+</Project>
